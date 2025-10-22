@@ -36,8 +36,8 @@ double potential_energy(const cx_mat& psi, const mat& V_original, double dx, dou
 
     for (int i = 1; i < n-1; i++) {
         for (int j = 1; j < n-1; j++) {
-            // Convert back from dimensionless V to original potential
-            double V_phys = V_original(i,j) * hbar * hbar / (2 * m * dx * dx);
+            // V_original is already the physical potential (no conversion needed)
+            double V_phys = V_original(i,j);
             PE += V_phys * real(conj(psi(i,j)) * psi(i,j));
         }
     }
@@ -112,7 +112,7 @@ int main()
     double E_pot = potential_energy(psi, V_original, dx, m, hbar);
     double E_total = E_kin + E_pot;
     double E_initial = E_total;
-    double E_theory = hbar * omega * (0.5 + 0.5 + 1);  // Ground state: (nx + ny + 1)ℏω = 2ℏω for nx=ny=0
+    double E_theory = hbar * omega;  // Ground state: E = ℏω(nx+1/2) + ℏω(ny+1/2) = ℏω for nx=ny=0
 
     // Print setup info
     printf("═══════════════════════════════════════════\n");
