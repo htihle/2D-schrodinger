@@ -50,18 +50,18 @@ int main()
     // Physical parameters
     double m = 1.0;
     double hbar = 1.0;
-    double omega = 30.0;
+    double omega = 5.0;   // Reduced from 30 for better visualization
     double omega2 = omega * omega;
     double x0 = 0.5;  // Center of harmonic oscillator
 
     // Numerical parameters
     int n = 100;      // Grid points (increased from 30)
-    int nt = 2000;    // Time steps
+    int nt = 8000;    // Time steps (increased to see full dynamics)
     int max_iter = 1000;  // Max iterations for convergence
     double tol = 1e-8;    // Convergence tolerance
 
     double dx = 1.0 / (n - 1);
-    double dt = 0.00005;  // Smaller time step for better accuracy
+    double dt = 0.0002;  // Adjusted for lower omega
 
     // Complex unit
     complex<double> i_unit(0, 1.0);
@@ -88,14 +88,17 @@ int main()
         }
     }
 
-    // Initial condition: Ground state of 2D harmonic oscillator
-    // ψ₀(x,y) = (mω/πℏ)^(1/2) * exp(-mω((x-x₀)² + (y-y₀)²)/(2ℏ))
+    // Initial condition: Displaced Gaussian wave packet
+    // This will oscillate in the harmonic potential, making dynamics visible
     double sigma = sqrt(hbar / (m * omega));
     double norm_factor = 1.0 / (sigma * sqrt(M_PI));
+    double x_displaced = x0 + 0.15;  // Displace by 15% to see oscillation
+    double y_displaced = x0 + 0.10;
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            double r2 = (xx(i) - x0) * (xx(i) - x0) + (yy(j) - x0) * (yy(j) - x0);
+            double r2 = (xx(i) - x_displaced) * (xx(i) - x_displaced) +
+                        (yy(j) - y_displaced) * (yy(j) - y_displaced);
             psi(i, j) = norm_factor * exp(-r2 / (2.0 * sigma * sigma));
         }
     }
@@ -128,11 +131,13 @@ int main()
     printf("  m   = %.2f\n", m);
     printf("  ω   = %.2f\n", omega);
     printf("───────────────────────────────────────────\n");
-    printf("Initial state: Ground state\n");
+    printf("Initial state: Displaced Gaussian packet\n");
     printf("  E_kinetic    = %.6f\n", E_kin);
     printf("  E_potential  = %.6f\n", E_pot);
     printf("  E_total      = %.6f\n", E_total);
-    printf("  E_theory     = %.6f (ground state)\n", E_theory);
+    printf("  E_gs (ref)   = %.6f (ground state)\n", E_theory);
+    printf("  Period T     = %.6f (2π/ω)\n", 2*M_PI/omega);
+    printf("  Total time   = %.6f\n", nt * dt);
     printf("═══════════════════════════════════════════\n\n");
 
     // Write header for diagnostics

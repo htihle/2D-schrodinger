@@ -146,7 +146,7 @@ def create_visualization():
     time_line = ax4.axvline(x=times[0], color='k', linestyle=':', linewidth=1.5, alpha=0.5)
 
     # Add overall title
-    title = fig.suptitle(f'2D Schrödinger Equation: Ground State Evolution (t = {times[0]:.4f})',
+    title = fig.suptitle(f'2D Schrödinger Equation: Wave Packet in Harmonic Trap (t = {times[0]:.4f})',
                          fontsize=16, fontweight='bold')
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
@@ -180,7 +180,7 @@ def create_visualization():
         time_line.set_xdata([t, t])
 
         # Update title
-        title.set_text(f'2D Schrödinger Equation: Ground State Evolution (t = {t:.4f})')
+        title.set_text(f'2D Schrödinger Equation: Wave Packet in Harmonic Trap (t = {t:.4f})')
 
         return surf, im, line_x, line_y, time_line, title
 
